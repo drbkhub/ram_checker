@@ -5,24 +5,13 @@ services:
       - "8080:8080"
     depends_on:
       - redis
-    # stdin_open: true # docker run -i
-    # tty: true        # docker run -t
-    # networks:
-    #   - redis_network
 
   redis:
     image: redis:alpine
     volumes:
       - redis-data:/data
-    # ports:
-    #   - "6379:6379"
-    # networks:
-    #   - redis_network
+
 
 volumes:
   redis-data:
     driver: local
-
-# networks:
-#   redis_network:
-

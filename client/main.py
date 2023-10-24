@@ -18,17 +18,18 @@ def ram_usage_percentage():
 
     return used_memory / total_memory * 100
 
+def alarm(data):
+    data_json = json.dumps({"value": round(used, 2)})        
+    bindata = data_json if type(data_json) == bytes else data_json.encode('utf-8')
+    req = request.Request(f"{ALARM_URL}/{SERVER_ID}", bindata, headers)
+    resp = request.urlopen(req)
 
 print("RAM checker started")
 while True:
     try:
         used = ram_usage_percentage()
         if used >= RAM_USAGE_RERC_LIMIT:
-            data = json.dumps({"value": round(used, 2)})        
-            bindata = data if type(data) == bytes else data.encode('utf-8')
-            req = request.Request(f"{ALARM_URL}/{SERVER_ID}", bindata, headers)
-            resp = request.urlopen(req)
-
+            alarm(used)
             
         time.sleep(DELAY_SEC)
 
